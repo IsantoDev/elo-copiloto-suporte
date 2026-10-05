@@ -1,0 +1,19 @@
+# segredos
+.env
+
+# ambiente e caches
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# dados e modelos 
+data/
+models/
+
+# logs do pipeline agendado
+logs/
+# base de conhecimento: documentos internos da empresa
+base_conhecimento/

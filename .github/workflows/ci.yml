@@ -1,0 +1,25 @@
+name: testes
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Instalar o uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Instalar as dependências
+        run: uv sync --no-progress
+
+      # Os testes usam dublês: nenhum banco, nenhuma API e nenhum modelo.
+      # Nada de dado real passa por aqui.
+      - name: Rodar os testes
+        run: uv run pytest -q

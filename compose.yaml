@@ -1,0 +1,32 @@
+# docker compose up -d --build     (sobe o Elo, com a atualização diária da base; o .env traz banco, Movidesk, chaves e caminhos)
+#
+# No notebook: o Ollama roda no Windows (usa a GPU) e o container o acessa por host.docker.internal.
+# No servidor: aponte OLLAMA_URL para onde o Ollama estiver e PLANNER_DIR para a pasta do planner.json.
+x-elo: &elo
+  image: elo:latest
+  env_file: .env
+  environment:
+    OLLAMA_URL: ${OLLAMA_URL_CONTAINER:-http://host.docker.internal:11434}
+    PASTA_DOCS: /app/base_conhecimento
+    PLANNER_PASTAS: /planner
+    AGENDA_DOCUMENTOS: "07:30"   # base de conhecimento + Refined, todo dia, dentro do servidor
+  volumes:
+    - ./base_conhecimento:/app/base_conhecimento   # documentos, urls.txt, espacos.txt, Excel do Planner
+    - ./data:/app/data                             # token do Microsoft 365 (cifrado)
+    - ./logs:/app/logs                             # logs e o arquivo de pausa da pré-geração
+    - ${PLANNER_DIR:-./base_conhecimento/planner}:/planner:ro   # planner.json do Power Automate (OneDrive)
+    - modelos:/cache/hf
+  extra_hosts:
+    - host.docker.internal:host-gateway
+  restart: unless-stopped
+
+services:
+  elo:
+    <<: *elo
+    build: .
+    ports:
+      - "127.0.0.1:8000:8000"   # só esta máquina; para o time, um túnel/proxy na frente
+    mem_limit: 3g   # abaixo dos 4 GB da VM do WSL (.wslconfig); em uso o Elo fica perto de 1 GB
+
+volumes:
+  modelos:
