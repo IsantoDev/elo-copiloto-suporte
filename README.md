@@ -8,6 +8,10 @@ resposta gerados por um LLM que roda na própria máquina.
 > **Nenhum dado de cliente está neste repositório:** aqui estão só o código, o SQL, a documentação
 > e números agregados. Nomes de produtos e de clientes foram substituídos por genéricos
 > (`Produto A`, `Produto B`, `ACME`), inclusive em comentários e testes.
+>
+> **Por que um commit só.** O desenvolvimento aconteceu num repositório privado, no trabalho, junto
+> dos dados reais. Esta é a versão pública e anonimizada, publicada de uma vez, sem os dados e o
+> histórico internos.
 
 ## O problema
 
